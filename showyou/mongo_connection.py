@@ -14,7 +14,7 @@ def post_insert(list):
     )
     db = client.get_database('ShowYou')
     collection = db.get_collection('post')
-    collection.drop() 
+    collection.drop()
     collection.insert(list)
     # results = collection.find()
     # for result in results :
@@ -33,16 +33,52 @@ def post_find():
     client.close()
     return doc
 
+def post_find():
+    client = pymongo.MongoClient(
+        "mongodb+srv://showyou:showyou@showyou-aznp8.mongodb.net/test?retryWrites=true&w=majority"
+    )
+    db = client.get_database('ShowYou')
+    collection = db.get_collection('post')
+    doc = collection.find()
+    # for result in doc :
+    #     print(result)
+    client.close()
+    return doc
+
+
+def sentiment_analysis_result_find():
+    client = pymongo.MongoClient(
+        "mongodb+srv://showyou:showyou@showyou-aznp8.mongodb.net/test?retryWrites=true&w=majority"
+    )
+    db = client.get_database('ShowYou')
+    collection = db.get_collection('sentiment_analysis_result')
+    doc = collection.find()
+    # for result in doc :
+    #     print(result)
+    client.close()
+    return doc
+
 def textmining_result_insert(list):
     client = pymongo.MongoClient(
         "mongodb+srv://showyou:showyou@showyou-aznp8.mongodb.net/test?retryWrites=true&w=majority"
     )
     db = client.get_database('ShowYou')
     collection = db.get_collection('textmining_result')
-    collection.drop() 
+    collection.drop()
     collection.insert(list)
     # doc = collection.find()
     # for result in doc :
     #     print(result)
     client.close()
 
+def textmining_result_find():
+    client = pymongo.MongoClient(
+        "mongodb+srv://showyou:showyou@showyou-aznp8.mongodb.net/test?retryWrites=true&w=majority"
+    )
+    db = client.get_database('ShowYou')
+    collection = db.get_collection('textmining_result')
+    doc = collection.find()
+    # for result in doc :
+    #     print(result)
+    client.close()
+    return doc

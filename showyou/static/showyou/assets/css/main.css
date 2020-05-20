@@ -3217,6 +3217,7 @@
     border: 3px solid #200400;
     background: white;
 }
+
 .input_text {
     width: 348px; height: 21px;
     margin: 6px 0 0 9px;
@@ -3226,6 +3227,7 @@
     font-size: 16px;
     outline: none;
 }
+
 .sch_smit {
     width: 54px; height: 40px;
     margin: 0; border: 0;
@@ -3239,4 +3241,3 @@
 .sch_smit:hover {
     background: #56C82C;
 }
-		
