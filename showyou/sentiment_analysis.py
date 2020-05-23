@@ -10,11 +10,6 @@ from . import mongo_connection
 #mac의 경우 한글폰트설정
 matplotlib.rc('font', family='AppleGothic')
 
-def __init__():
-    return True
-
-def __path():
-    return True
 #리스트 전부 가져오기
 def Sentiment_Analysis():
     sentiment_list = mongo_connection.sentiment_analysis_result_find()
@@ -167,7 +162,7 @@ def Sentiment_Analysis():
     plt.savefig('sentiment1_plt.png')
     pylab.savefig('sentiment2_pylab.png')
     fig.savefig('sentiment3_fig.png')
-    #print("이미지 저장해줭제바루")
+    
     #fig.savefig('sentiment1.png')
     #plt.show()
 
