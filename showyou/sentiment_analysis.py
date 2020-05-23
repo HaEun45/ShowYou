@@ -1,14 +1,17 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
+import pymongo
+import cv2
 
 from . import mongo_connection
 
-#window경우 한글폰트설정
+#window경우 한글폰트설정/ family에 원하는 폰트 작성
 #matplotlib.rc('font', family='HYsanB')
 
 #mac의 경우 한글폰트설정
 matplotlib.rc('font', family='AppleGothic')
+
 
 #리스트 전부 가져오기
 def Sentiment_Analysis():
@@ -32,11 +35,11 @@ def Sentiment_Analysis():
     #    print(i, '/', keyword_list[i], '/', sentiment_data[i])
 
 
-    # 합친 딕션너리
+    #합친 딕션너리
     post_id_to_keywords = dict(zip(post_id,keyword_list))
     post_id_to_sentiment = dict(zip(post_id,sentiment_data))
-#    print(post_id_to_keywords)
-#    print(post_id_to_sentiment)
+    #print(post_id_to_keywords)
+    #print(post_id_to_sentiment)
 
     #키워드에 따른 빈도수 구하기
     keywords = [] #모든 키워드들의 집합
@@ -75,18 +78,19 @@ def Sentiment_Analysis():
             sentiment[k] = 0
 
 
-
-    input_keywords = keywords[59:73]
-    input_count = dict(list(count.items())[59:73])
-    input_sentiment = dict(list(sentiment.items())[59:73])
+    #그래프 그릴 데이터 / 원하는 개수로 설정
+    input_keywords = keywords[55:73]
+    input_count = dict(list(count.items())[55:73])
+    input_sentiment = dict(list(sentiment.items())[55:73])
 
     print(input_keywords)
     print(input_count)
     print(input_sentiment)
 
-    #원그래프 만들기!!
+
+    #원그래프 만들기
     #r = np.random.randiant(5,15,size=10)
-    r = list(count.values())
+    r = list(input_count.values())
 
 
     class C():
@@ -140,9 +144,9 @@ def Sentiment_Analysis():
                 if(input_sentiment[keyword]==1):
                     color='orange'
                 elif(input_sentiment[keyword]==0):
-                    color='salmon'
+                    color='lightcoral'
                 else:
-                    color='skyblue'
+                    color='lightskyblue'
 
                 circ = plt.Circle(self.x[i,:2],self.x[i,2], color = color)
                 ax.add_patch(circ)
@@ -155,15 +159,20 @@ def Sentiment_Analysis():
     ax.axis("off")
 
     c.minimize()
-
     c.plot(ax)
     ax.relim()
     ax.autoscale_view()
-    plt.savefig('sentiment1_plt.png')
-    pylab.savefig('sentiment2_pylab.png')
-    fig.savefig('sentiment3_fig.png')
-    
-    #fig.savefig('sentiment1.png')
-    #plt.show()
 
-    #fig.close()
+     #그림 저장
+    plt.savefig('sentiment.png')
+
+    #그래프 그려주기
+    imgfile = '/Users/kimhaeun/Desktop/proj/ShowYou/sentiment.png'
+    img = cv2.imread(imgfile,1)
+    cv2.imwrite('ShowYou/static/showyou/images/senti.jpg',img)
+
+    #그래프 띄우기
+    plt.show()
+
+
+Sentiment_Analysis()
