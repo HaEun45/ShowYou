@@ -142,11 +142,11 @@ def Sentiment_Analysis():
             for i in range(self.N):
                 keyword=input_keywords[index]
                 if(input_sentiment[keyword]==1):
-                    color='orange'
+                    color='#6796DC'
                 elif(input_sentiment[keyword]==0):
-                    color='lightcoral'
+                    color= '#97CA73'
                 else:
-                    color='lightskyblue'
+                    color='#E97A7A'
 
                 circ = plt.Circle(self.x[i,:2],self.x[i,2], color = color)
                 ax.add_patch(circ)
@@ -174,5 +174,5 @@ def Sentiment_Analysis():
     #그래프 띄우기
     plt.show()
 
-
-Sentiment_Analysis()
+#if __name__ == '__main__':
+#    Sentiment_Analysis()
