@@ -12,6 +12,8 @@ from . import mongo_connection
 #mac의 경우 한글폰트설정
 matplotlib.rc('font', family='AppleGothic')
 
+#Thread처리
+plt.switch_backend('agg')
 
 #리스트 전부 가져오기
 def Sentiment_Analysis():
