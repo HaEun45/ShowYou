@@ -18,6 +18,6 @@ urlpatterns = [
     path('twitter_user/',views.twitter_user, name = 'twitter_user'),
     path('instagram_user/',views.instagram_user, name = 'instagram_user'),
     path('blog_user/',views.blog_user, name = 'blog_user'),
-
+    path('visualization/',views.visualization, name = 'visualization'),
 
 ]
