@@ -14,9 +14,11 @@ font = matplotlib.font_manager.FontProperties(fname="showyou/static/showyou/asse
 plt.switch_backend('agg')
 
 
-
+def search(name, people):
+    return [element for element in people if element['keyword'] == name]
 #리스트 전부 가져오기
 def Sentiment_Analysis():
+
     sentiment_list = mongo_connection.sentiment_analysis_result_find()
     textmining_list = mongo_connection.textmining_result_find()
 
@@ -42,6 +44,7 @@ def Sentiment_Analysis():
     post_id_to_sentiment = dict(zip(post_id,sentiment_data))
     #print(post_id_to_keywords)
     #print(post_id_to_sentiment)
+
 
     #키워드에 따른 빈도수 구하기
     keywords = [] #모든 키워드들의 집합
@@ -80,20 +83,37 @@ def Sentiment_Analysis():
             sentiment[k] = 0
 
 
-    #그래프 그릴 데이터 / 원하는 개수로 설정
-    input_keywords = keywords[55:73]
-    input_count = dict(list(count.items())[55:73])
-    input_sentiment = dict(list(sentiment.items())[55:73])
+    #print('keywords')
+    #print(keywords)
+    #print('count')
+    #print(count)
+    #print('sentiment')
+    #print(sentiment)
+
+
+    input_keywords = []
+    input_count = []
+    for key,value in count.items():
+        if(value > 3):  #원의 갯수 여기를 바꿔주기
+            input_keywords.append(key)
+            input_count.append(value)
+
+    input_sentiment = []
+    for keyword in input_keywords:
+        for key,value in sentiment.items():
+            if(keyword == key):
+                input_sentiment.append(value)
 
     print(input_keywords)
     print(input_count)
     print(input_sentiment)
 
 
-    #원그래프 만들기
-    #r = np.random.randiant(5,15,size=10)
-    r = list(input_count.values())
 
+
+
+    #원그래프 만들기
+    r = list(input_count)
 
     class C():
         def __init__(self,r):
@@ -143,9 +163,11 @@ def Sentiment_Analysis():
             index=0
             for i in range(self.N):
                 keyword=input_keywords[index]
-                if(input_sentiment[keyword]==1):
+                #if(input_sentiment[keyword]==1):
+                if(input_sentiment[index]==1):
                     color='#6796DC'
-                elif(input_sentiment[keyword]==0):
+                #elif(input_sentiment[keyword]==0):
+                elif(input_sentiment[index]==0):
                     color= '#97CA73'
                 else:
                     color='#E97A7A'
