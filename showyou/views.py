@@ -18,9 +18,6 @@ def generic(request):
 def elements(request):
     return render(request, 'showyou/elements.html')
 
-def index(request):
-    sentiment_analysis.Sentiment_Analysis()
-    return render(request, 'showyou/index.html')
 
 def twitter(request):
     search_keyword = request.GET.get('search_keyword', '')
@@ -29,11 +26,17 @@ def twitter(request):
         print('search_keyword = ' + search_keyword)
         twitter_parser_total.parsing(search_keyword,'m')
         textmining.analysis()
-        # keyword_wordcloud.show()
-        return render(request, 'showyou/twitter_result.html')
+        sentiment_analysis.Sentiment_Analysis()
+        keyword = request.GET.get("search_keyword")
+        return render(request, 'showyou/visualization.html',{'keyword':keyword} )
     else :
         print("없는 경우")
         return render(request, 'showyou/twitter.html')
+
+
+def visualization(request):
+    return render(request, 'showyou/visualization.html')
+
 
 def twitter_user(request):
     search_keyword = request.GET.get('search_keyword', '')
