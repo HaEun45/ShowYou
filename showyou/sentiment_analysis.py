@@ -17,15 +17,15 @@ plt.switch_backend('agg')
 #리스트 전부 가져오기
 def Sentiment_Analysis():
 
-    post_list = mongo_connection.post_category_find()
+    post_category_list = mongo_connection.post_category_find()
     sentiment_list = mongo_connection.sentiment_analysis_result_find()
     textmining_list = mongo_connection.textmining_result_find()
 
     #카테고리 받아오기
-    #category_list = []
-    #for i in post_list:
-    #    category_list.append(i['category'])
-
+    category = '엔터테인먼트'
+    category_list = []
+    for i in post_category_list:
+        category_list.append(i['category'])
 
     #post_id /긍정(+1),부정(-1),중립(0) 받아오기
     sentiment_data =[]
@@ -39,16 +39,24 @@ def Sentiment_Analysis():
         post_id.append(i['post_id'])
         keyword_list.append(i['keyword'])
 
-    for i in post_id:
-        print(i, '/', keyword_list[i], '/', sentiment_data[i])
+    #for i in post_id:
+    #    print(i, '/', keyword_list[i], '/', sentiment_data[i])
 
 
     #합친 딕션너리
-    #post_id_to_category = dict(zip(post_id,category_list))#새로
+    post_id_to_category = dict(zip(post_id,category_list)) #여기한줄
     post_id_to_keywords = dict(zip(post_id,keyword_list))
     post_id_to_sentiment = dict(zip(post_id,sentiment_data))
     #print(post_id_to_keywords)
     #print(post_id_to_sentiment)
+
+    #카테고리별 해당 포스트의 키워드 선정
+    temp_post_id = []
+    for post_id,cat in post_category_list.items():
+         if(cat == category):
+             temp_post_id.append(post_id)
+
+    print(temp_post_id)
 
 
     #키워드에 따른 빈도수 구하기
@@ -58,7 +66,8 @@ def Sentiment_Analysis():
     neutral = {} #{키워드: 중립의 빈도}의 순서쌍
     negative = {}#{키워드: 부정의 빈도}의 순서쌍
 
-    for post_id in post_id:
+
+    for post_id in temp_post_id:
         for keyword in post_id_to_keywords[post_id]:
             if(keyword not in keywords):
                 keywords.append(keyword)
@@ -77,8 +86,8 @@ def Sentiment_Analysis():
             else:
                 negative[keyword] += 1
 
+    #감성 판단
     sentiment = {}
-
     for k in list(keywords):
         if(positive[k] > negative[k] and positive[k]>neutral[k]):
             sentiment[k] = 1
@@ -91,33 +100,11 @@ def Sentiment_Analysis():
     input_keywords = []
     input_count = {}
     input_count = dict(sorted(count.items(), key=lambda key: key[1],reverse=True)[0:10])
-    input_keywords=list(count.keys())
-
-
-    print(input_keywords)
-    print(input_count)
-
-
-
-
-'''
-    input_keywords = []
-    input_count = []
-    for key,value in count.items():
-        if(value > 3):  #원의 갯수 여기를 바꿔주기
-            input_keywords.append(key)
-            input_count.append(value)
-
-    input_sentiment = []
-    for keyword in input_keywords:
-        for key,value in sentiment.items():
-            if(keyword == key):
-                input_sentiment.append(value)
+    input_keywords =list(input_count.keys())
 
     print(input_keywords)
     print(input_count)
-    print(input_sentiment)
-    '''
+
 
     #원그래프 만들기 --------------------------------------------------------
 
