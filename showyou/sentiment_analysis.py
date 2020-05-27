@@ -14,13 +14,17 @@ font = matplotlib.font_manager.FontProperties(fname="showyou/static/showyou/asse
 plt.switch_backend('agg')
 
 
-def search(name, people):
-    return [element for element in people if element['keyword'] == name]
 #리스트 전부 가져오기
 def Sentiment_Analysis():
 
+    post_list = mongo_connection.post_category_find()
     sentiment_list = mongo_connection.sentiment_analysis_result_find()
     textmining_list = mongo_connection.textmining_result_find()
+
+    #카테고리 받아오기
+    #category_list = []
+    #for i in post_list:
+    #    category_list.append(i['category'])
 
 
     #post_id /긍정(+1),부정(-1),중립(0) 받아오기
@@ -35,11 +39,12 @@ def Sentiment_Analysis():
         post_id.append(i['post_id'])
         keyword_list.append(i['keyword'])
 
-    #for i in post_id:
-    #    print(i, '/', keyword_list[i], '/', sentiment_data[i])
+    for i in post_id:
+        print(i, '/', keyword_list[i], '/', sentiment_data[i])
 
 
     #합친 딕션너리
+    #post_id_to_category = dict(zip(post_id,category_list))#새로
     post_id_to_keywords = dict(zip(post_id,keyword_list))
     post_id_to_sentiment = dict(zip(post_id,sentiment_data))
     #print(post_id_to_keywords)
@@ -83,14 +88,19 @@ def Sentiment_Analysis():
             sentiment[k] = 0
 
 
-    #print('keywords')
-    #print(keywords)
-    #print('count')
-    #print(count)
-    #print('sentiment')
-    #print(sentiment)
+    input_keywords = []
+    input_count = {}
+    input_count = dict(sorted(count.items(), key=lambda key: key[1],reverse=True)[0:10])
+    input_keywords=list(count.keys())
 
 
+    print(input_keywords)
+    print(input_count)
+
+
+
+
+'''
     input_keywords = []
     input_count = []
     for key,value in count.items():
@@ -107,13 +117,11 @@ def Sentiment_Analysis():
     print(input_keywords)
     print(input_count)
     print(input_sentiment)
+    '''
 
+    #원그래프 만들기 --------------------------------------------------------
 
-
-
-
-    #원그래프 만들기
-    r = list(input_count)
+    r = list(input_count.values())
 
     class C():
         def __init__(self,r):
@@ -164,10 +172,10 @@ def Sentiment_Analysis():
             for i in range(self.N):
                 keyword=input_keywords[index]
                 #if(input_sentiment[keyword]==1):
-                if(input_sentiment[index]==1):
+                if(sentiment[keyword]==1):
                     color='#6796DC'
                 #elif(input_sentiment[keyword]==0):
-                elif(input_sentiment[index]==0):
+                elif(sentiment[keyword]==0):
                     color= '#97CA73'
                 else:
                     color='#E97A7A'
