@@ -65,9 +65,9 @@ def Sentiment_Analysis():
             count[keyword] += 1
             senti = post_id_to_sentiment[post_id]
 
-            if(senti == 1):
+            if(senti == '1'):
                 positive[keyword] += 1
-            elif(senti == 0):
+            elif(senti == '0'):
                 neutral[keyword] += 1
             else:
                 negative[keyword] += 1
